@@ -1,0 +1,178 @@
+Metadata-Version: 2.2
+Name: markdocx
+Version: 0.1.0
+Summary: Convert Markdown to Word documents with customizable styles
+Home-page: https://github.com/yourusername/markdocx
+Author: Your Name
+Author-email: your.email@example.com
+Classifier: Programming Language :: Python :: 3
+Classifier: License :: OSI Approved :: MIT License
+Classifier: Operating System :: OS Independent
+Requires-Python: >=3.6
+Description-Content-Type: text/markdown
+Requires-Dist: python-docx==0.8.11
+Requires-Dist: Markdown>=3.4.0
+Requires-Dist: beautifulsoup4==4.10.0
+Requires-Dist: PyYAML>=5.4.1
+Requires-Dist: requests>=2.25.1
+Dynamic: author
+Dynamic: author-email
+Dynamic: classifier
+Dynamic: description
+Dynamic: description-content-type
+Dynamic: home-page
+Dynamic: requires-dist
+Dynamic: requires-python
+Dynamic: summary
+
+# markdocx
+
+将你的 markdown 文件转换为 MS Word（.docx）/ Convert your Markdown files to MS Word (.docx).
+
+🚧 正在开发中 / Under development
+
+## 效果图
+
+![example](assets/example.png)
+
+## 项目结构
+
+```
+markdocx/
+├── src/                        # 源代码目录
+│   ├── __init__.py            # 主入口
+│   ├── core/                  # 核心功能
+│   ├── utils/                 # 工具函数
+│   └── config/                # 配置文件
+├── tests/                     # 测试目录
+├── examples/                  # 示例目录
+├── assets/                    # 资源文件
+├── setup.py                   # 安装配置
+├── requirements.txt           # 依赖列表
+├── README.MD                  # 项目说明
+└── build.bat                  # 构建脚本
+```
+
+## 使用方法
+
+### 1. 命令行使用
+在终端执行命令：
+```shell
+markdocx input.md -o output.docx -s style.yaml -a
+```
+
+参数说明：
+- `-o` 可选参数，指定输出路径，默认保存到与 `input.md` 同目录位置、同名的 Word 文件
+- `-s` 可选参数，指定样式文件路径，默认使用内置样式 `src/config/default_style.yaml`
+- `-a` 可选参数，在完成导出后自动打开 Word 文件
+
+注意：如果路径中**包含空格**，需要用英文(半角)双引号包起来，如：
+```shell
+markdocx "D:/my folder/the input.md" -o "D:/my folder/the output.md"
+```
+
+### 2. 作为库使用
+
+```python
+from markdocx import MarkDocx
+
+# 初始化转换器
+converter = MarkDocx(style_config="path/to/style.yaml")
+
+# 转换文件
+converter.convert("input.md", "output.docx", auto_open=True)
+
+# 转换字符串
+converter.convert_string("# Hello World", "output.docx")
+```
+
+## 支持的功能
+
+### Markdown 语法支持
+- ✅ 基础文本：普通段落、加粗、斜体、下划线
+- ✅ 标题：一到四级标题，保留大纲导航
+- ✅ 列表：有序列表、无序列表、TODO List（最多两级）
+- ✅ 图片：本地图片、网络图片、图片标题
+- ✅ 表格：基础表格支持
+- ✅ 其他元素：
+  - 引用块
+  - 超链接
+  - 分割线（Word中表现为分页符）
+  - 行内代码
+  - 上标、下标
+  - 高亮文本
+
+### 样式自定义
+通过 YAML 文件自定义样式，示例：
+
+```yaml
+h1:  # 段落类型：h1-h4, normal
+  font:
+    default: Times New Roman  # 西文字体
+    east-asia: 宋体          # 中文字体
+    size: 12                 # 字体大小(pt)
+    color: "000000"         # RGB颜色(16进制)
+    extra:                   # 可选样式
+    - bold                  # 加粗
+    - italic                # 斜体
+    - underline             # 下划线
+    - strike                # 删除线
+  first-line-indent: 0      # 首行缩进(倍)
+  line-spacing: 1.2         # 行距(倍)
+  space:
+    before: 0               # 段前空格(pt)
+    after: 0                # 段后空格(pt)
+```
+
+## 已知限制
+
+1. 行内样式限制：
+   - 不支持多重行内样式（如同时加粗和斜体）
+   - 列表最大支持两级嵌套
+
+2. 暂不支持的功能：
+   - LaTeX 公式
+   - 脚注
+   - 代码块样式优化（计划转换为图片）
+
+## 从源码构建
+
+1. 需要 Python 3.0+ 环境
+2. 安装依赖：`pip install -r requirements.txt`
+3. 构建可执行文件：
+   - Windows：运行 `build.bat`
+   - macOS：复制 `build.bat` 中的命令到终端执行
+
+## 感谢开源项目
+
+- [python-docx](https://python-docx.readthedocs.io)
+- [python-markdown](https://python-markdown.github.io)
+- [beautifulsoup4](https://beautifulsoup.readthedocs.io)
+- [pyyaml](https://pyyaml.org)
+
+## 未来计划
+
+- [x] 使用 YAML 导入样式参数
+- [ ] 支持更多段落类型设置
+- [ ] 提供 GUI
+- [ ] 提供 macOS 版本。目前我只有 Windows 设备，欢迎参与贡献:)
+
+## 可解析的语法
+
+- [x] 普通段落
+- [x] 一到四级标题，保留大纲导航
+- [x] 本地图片、网络图片、图片标题
+- [x] 有序列表、无序列表、TODO List
+- [x] 引用块
+- [x] 表格
+- [x] 超链接
+- [x] 分割线，在 Word 中表现为分页符
+- [x] 加粗、斜体、下划线
+- [x] 行内代码
+- [x] 上标、下标
+- [x] 高亮文本
+- [ ] 代码块样式优化（或转换为图片）
+
+## 暂时无法实现
+- LaTeX
+- 脚注
