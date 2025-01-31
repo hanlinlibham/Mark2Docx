@@ -87,8 +87,8 @@ h1:  # 段落类型：h1-h4, normal
 
 1. 克隆仓库
 ```bash
-git clone https://github.com/hanlinlibham/Mark2Docx.git
-cd Mark2Docx
+git clone https://github.com/yourusername/markdocx.git
+cd markdocx
 ```
 
 2. 创建虚拟环境
